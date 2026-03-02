@@ -30,6 +30,17 @@ pub fn typescript_queries(lang: LanguageFn) -> LangQueries {
     }
 }
 
+pub fn csharp_queries(lang: LanguageFn) -> LangQueries {
+    let ts_lang = lang.into();
+    LangQueries {
+        symbols: Query::new(&ts_lang, CSHARP_SYMBOLS).expect("invalid csharp symbols query"),
+        function_body: Query::new(&ts_lang, CSHARP_FUNCTION_BODY)
+            .expect("invalid csharp function_body query"),
+        impl_methods: Query::new(&ts_lang, CSHARP_CLASS_METHODS)
+            .expect("invalid csharp class_methods query"),
+    }
+}
+
 // ── Rust queries ──
 
 const RUST_SYMBOLS: &str = r#"[
@@ -116,4 +127,44 @@ const TS_CLASS_METHODS: &str = r#"
   name: (type_identifier) @class_name
   body: (class_body
     (method_definition name: (property_identifier) @method_name) @method_def))
+"#;
+
+// ── C# queries ──
+
+const CSHARP_SYMBOLS: &str = r#"[
+  (class_declaration name: (identifier) @name) @def
+  (interface_declaration name: (identifier) @name) @def
+  (struct_declaration name: (identifier) @name) @def
+  (enum_declaration name: (identifier) @name) @def
+  (record_declaration name: (identifier) @name) @def
+  (namespace_declaration name: (identifier) @name) @def
+  (method_declaration name: (identifier) @name) @def
+  (constructor_declaration name: (identifier) @name) @def
+  (property_declaration name: (identifier) @name) @def
+  (field_declaration
+    (variable_declaration
+      (variable_declarator name: (identifier) @name))) @def
+  (delegate_declaration name: (identifier) @name) @def
+]"#;
+
+const CSHARP_FUNCTION_BODY: &str = r#"[
+  (method_declaration name: (identifier) @name body: (block)? @body) @def
+  (constructor_declaration name: (identifier) @name body: (block)? @body) @def
+  (class_declaration name: (identifier) @name) @def
+  (interface_declaration name: (identifier) @name) @def
+  (struct_declaration name: (identifier) @name) @def
+  (enum_declaration name: (identifier) @name) @def
+  (record_declaration name: (identifier) @name) @def
+  (property_declaration name: (identifier) @name) @def
+  (field_declaration
+    (variable_declaration
+      (variable_declarator name: (identifier) @name))) @def
+  (delegate_declaration name: (identifier) @name) @def
+]"#;
+
+const CSHARP_CLASS_METHODS: &str = r#"
+(class_declaration
+  name: (identifier) @class_name
+  body: (declaration_list
+    (method_declaration name: (identifier) @method_name) @method_def))
 "#;

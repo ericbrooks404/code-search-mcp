@@ -13,6 +13,7 @@ tree-sitter = "0.25"
 tree-sitter-language = "0.1"
 tree-sitter-rust = "0.24"
 tree-sitter-typescript = "0.23"
+tree-sitter-c-sharp = "0.23"
 tokio = { version = "1", features = ["full"] }
 dashmap = "6"
 serde = { version = "1", features = ["derive"] }

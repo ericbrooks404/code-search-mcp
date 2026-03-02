@@ -137,6 +137,7 @@ Configure the server in your MCP client configuration (e.g., `.mcp.json`):
 Currently supports:
 - **Rust** (.rs files)
 - **TypeScript/JavaScript** (.ts, .tsx files)
+- **C#** (.cs files)
 
 The tool uses tree-sitter parsers for accurate semantic understanding of code structure.
 
@@ -164,6 +165,7 @@ Instead of reading entire files (thousands of tokens), you can get exactly the i
 - `tree-sitter` - Parser generator tool and incremental parsing library
 - `tree-sitter-rust` - Rust grammar for tree-sitter
 - `tree-sitter-typescript` - TypeScript/JavaScript grammar
+- `tree-sitter-c-sharp` - C# grammar for tree-sitter
 - `tokio` - Async runtime
 - `dashmap` - Concurrent hash map for caching
 

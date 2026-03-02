@@ -83,6 +83,7 @@ fn get_methods(
     let impl_name_label = match lang {
         Lang::Rust => "impl_name",
         Lang::TypeScript => "class_name",
+        Lang::CSharp => "class_name",
     };
     let impl_name_idx = queries.impl_methods.capture_index_for_name(impl_name_label);
     let method_name_idx = queries.impl_methods.capture_index_for_name("method_name");

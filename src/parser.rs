@@ -11,6 +11,7 @@ use crate::queries::{self, LangQueries};
 pub enum Lang {
     Rust,
     TypeScript,
+    CSharp,
 }
 
 impl Lang {
@@ -18,6 +19,7 @@ impl Lang {
         match path.extension()?.to_str()? {
             "rs" => Some(Lang::Rust),
             "ts" | "tsx" => Some(Lang::TypeScript),
+            "cs" => Some(Lang::CSharp),
             _ => None,
         }
     }
@@ -41,6 +43,7 @@ pub struct ParseCache {
     cache: DashMap<PathBuf, CachedParse>,
     rust_queries: LangQueries,
     ts_queries: LangQueries,
+    csharp_queries: LangQueries,
 }
 
 impl ParseCache {
@@ -49,6 +52,7 @@ impl ParseCache {
             cache: DashMap::new(),
             rust_queries: queries::rust_queries(tree_sitter_rust::LANGUAGE),
             ts_queries: queries::typescript_queries(tree_sitter_typescript::LANGUAGE_TYPESCRIPT),
+            csharp_queries: queries::csharp_queries(tree_sitter_c_sharp::LANGUAGE),
         }
     }
 
@@ -56,6 +60,7 @@ impl ParseCache {
         match lang {
             Lang::Rust => &self.rust_queries,
             Lang::TypeScript => &self.ts_queries,
+            Lang::CSharp => &self.csharp_queries,
         }
     }
 
@@ -79,6 +84,7 @@ impl ParseCache {
         let ts_lang = match lang {
             Lang::Rust => tree_sitter_rust::LANGUAGE.into(),
             Lang::TypeScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+            Lang::CSharp => tree_sitter_c_sharp::LANGUAGE.into(),
         };
         parser.set_language(&ts_lang).context("failed to set language")?;
 
